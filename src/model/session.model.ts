@@ -3,7 +3,7 @@ import { ISessionDocument } from '../interface/session';
 
 const SessionSchema: mongoose.Schema<ISessionDocument> =
   new mongoose.Schema<ISessionDocument>({
-    name: {
+    user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
     },
