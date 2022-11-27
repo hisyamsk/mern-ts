@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-interface IUser {
+export interface IUserInput {
   email: string;
   name: string;
   password: string;
 }
 
-export interface IUserDocument extends IUser, mongoose.Document {
+export interface IUserDocument extends IUserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   comparePassword: (candidatePassword: string) => Promise<boolean>;

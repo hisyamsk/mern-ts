@@ -4,12 +4,10 @@ import {
   QueryOptions,
   UpdateQuery,
 } from 'mongoose';
-import { IProductDocument } from '../interface/product';
+import { IProductDocument, IProductInput } from '../interface/product';
 import ProductModel from '../model/product.model';
 
-export async function createProduct(
-  input: DocumentDefinition<Omit<IProductDocument, 'createdAt' | 'updatedAt'>>
-) {
+export async function createProduct(input: DocumentDefinition<IProductInput>) {
   return await ProductModel.create(input);
 }
 

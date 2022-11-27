@@ -1,16 +1,9 @@
 import { omit } from 'lodash';
 import { DocumentDefinition, FilterQuery } from 'mongoose';
-import { IUserDocument } from '../interface/model';
+import { IUserDocument, IUserInput } from '../interface/model';
 import UserModel from '../model/user.model';
 
-export async function createUser(
-  input: DocumentDefinition<
-    Omit<
-      IUserDocument,
-      'passwordConfirmation' | 'comparePassword' | 'createdAt' | 'updatedAt'
-    >
-  >
-) {
+export async function createUser(input: DocumentDefinition<IUserInput>) {
   try {
     return await UserModel.create(input);
   } catch (err: any) {
