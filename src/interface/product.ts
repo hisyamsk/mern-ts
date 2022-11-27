@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { IUserDocument } from './model';
 
 export interface IProductDocument {
