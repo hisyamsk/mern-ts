@@ -25,17 +25,17 @@ const params = {
   }),
 };
 
-const createProductSchema = object({
+export const createProductSchema = object({
   ...payload,
 });
-const updateProductSchema = object({
+export const updateProductSchema = object({
   ...payload,
   ...params,
 });
-const getProductSchema = object({
+export const getProductSchema = object({
   ...params,
 });
-const deleteProductSchema = object({
+export const deleteProductSchema = object({
   ...params,
 });
 

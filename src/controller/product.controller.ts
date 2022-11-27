@@ -35,7 +35,7 @@ export async function updateProductHandler(
     return res.sendStatus(404);
   }
 
-  if (product.user !== userId) {
+  if (String(product.user) !== userId) {
     return res.sendStatus(403);
   }
 
@@ -74,7 +74,7 @@ export async function deleteProductHandler(
     return res.sendStatus(404);
   }
 
-  if (userId !== product.user) {
+  if (userId !== String(product.user)) {
     return res.sendStatus(403);
   }
 
