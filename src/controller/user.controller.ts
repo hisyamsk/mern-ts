@@ -10,7 +10,8 @@ export async function createUserHandler(
 ) {
   try {
     const user = await createUser(req.body);
-    res.status(201).send(omit(user.toJSON(), 'password'));
+    const { _id, name, email } = user;
+    res.status(201).json({ _id, name, email });
   } catch (err: any) {
     log.error(err);
     res.status(409).send(err.message);
