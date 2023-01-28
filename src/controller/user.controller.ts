@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { createUser } from '../service/user.service';
 import { CreateUserInput } from '../schema/user.schema';
 import log from '../utils/logger';
-import { omit } from 'lodash';
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput['body']>,
@@ -16,4 +15,8 @@ export async function createUserHandler(
     log.error(err);
     res.status(409).send(err.message);
   }
+}
+
+export async function getCurrentUser(req: Request, res: Response) {
+  return res.send(res.locals.user)
 }

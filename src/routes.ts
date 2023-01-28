@@ -6,7 +6,7 @@ import {
   getUserSessionHandler,
   updateUserSessionHandler,
 } from './controller/session.controller';
-import { createUserHandler } from './controller/user.controller';
+import { createUserHandler, getCurrentUser } from './controller/user.controller';
 import {
   createProductHandler,
   deleteProductHandler,
@@ -29,10 +29,11 @@ import requireUser from './middleware/requireUser';
 import validateResource from './middleware/validateResource';
 
 function routes(app: Express) {
-  app.get('/healthcheck', (req: Request, res: Response) => res.sendStatus(200));
+  app.get('/healthcheck', (_: Request, res: Response) => res.sendStatus(200));
 
   // auth route
   app.post('/api/users', validateResource(createUserSchema), createUserHandler);
+  app.get('/api/me', requireUser, getCurrentUser);
 
   // sessions route
   app.post(
