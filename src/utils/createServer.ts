@@ -5,6 +5,7 @@ import routes from '../routes';
 
 // middleware
 import { deserializeUser } from '../middleware/deserializeUser';
+import cookieParser from 'cookie-parser';
 
 export function createServer() {
   const app = express();
@@ -15,6 +16,7 @@ export function createServer() {
       credentials: true,
     })
   );
+  app.use(cookieParser());
   app.use(express.json());
   app.use(deserializeUser);
 
