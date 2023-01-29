@@ -1,5 +1,7 @@
 import config from 'config';
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
+
 import {
   createUserSession,
   findSessions,
@@ -32,15 +34,15 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     { ...user, session: session._id },
     { expiresIn: config.get('refreshTokenTtl') }
   );
-  
+
   res.cookie('accessToken', accessToken, {
     maxAge: 1000 * 60 * 15, // 15 mins
     httpOnly: true,
     domain: 'localhost',
     path: '/',
     sameSite: 'strict',
-    secure: false
-  })
+    secure: false,
+  });
 
   res.cookie('refreshToken', refreshToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
@@ -48,15 +50,15 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     domain: 'localhost',
     path: '/',
     sameSite: 'strict',
-    secure: false
-  })
+    secure: false,
+  });
 
   // return acess & refresh token
   return res.send({ accessToken, refreshToken });
 }
 
 export async function getUserSessionHandler(req: Request, res: Response) {
-  const userId = res.locals.user._id;
+  const userId = new mongoose.Types.ObjectId(res.locals.user._id);
 
   const sessions = await findSessions({ user: userId, valid: true });
   return res.send(sessions);

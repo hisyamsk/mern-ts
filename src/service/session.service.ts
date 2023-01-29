@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import config from 'config';
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 
 import { ISessionDocument } from '../interface/session';
 import SessionModel from '../model/session.model';
@@ -14,7 +14,7 @@ export async function createUserSession(userId: string, userAgent: string) {
 }
 
 export async function findSessions(query: FilterQuery<ISessionDocument>) {
-  return await SessionModel.find(query).lean();
+  return await SessionModel.aggregate([{ $match: query }]);
 }
 
 export async function updateSession(
