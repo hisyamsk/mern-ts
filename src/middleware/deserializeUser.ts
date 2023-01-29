@@ -8,8 +8,13 @@ export const deserializeUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  let accessToken: string = get(req, 'headers.authorization', '');
-  let refreshToken: string | string[] = get(req, 'headers.x-refresh', '');
+  let accessToken: string =
+    get(req, 'cookies.accessToken', '') ||
+    get(req, 'headers.authorization', '') ||
+    get(req, 'headers.x-access-token', '');
+
+  let refreshToken: string =
+    get(req, 'cookies.refreshToken') || get(req, 'headers.x-refresh', '');
 
   if (!accessToken) {
     return next();
@@ -21,11 +26,7 @@ export const deserializeUser = async (
 
     if (decodedToken.valid && decodedToken.decoded) {
       res.locals.user = decodedToken.decoded;
-    } else if (
-      decodedToken.expired &&
-      refreshToken &&
-      typeof refreshToken === 'string'
-    ) {
+    } else if (decodedToken.expired && refreshToken) {
       const newAccessToken: string | boolean = await reIssueAccessToken(
         refreshToken
       );
