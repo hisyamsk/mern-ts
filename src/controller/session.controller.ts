@@ -35,8 +35,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     { expiresIn: config.get('refreshTokenTtl') }
   );
 
+  // cookie expires in one year, but the value(accessToken) itself will only lasts for 15 min
   res.cookie('accessToken', accessToken, {
-    maxAge: 1000 * 60 * 15, // 15 mins
+    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
     httpOnly: true,
     domain: 'localhost',
     path: '/',

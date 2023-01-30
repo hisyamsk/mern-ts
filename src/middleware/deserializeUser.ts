@@ -20,30 +20,27 @@ export const deserializeUser = async (
     return next();
   }
 
-  if (accessToken.startsWith('Bearer ')) {
-    accessToken = accessToken.replace(/^Bearer\s/, '');
-    const decodedToken = validateJwt(accessToken);
+  accessToken = accessToken.replace(/^Bearer\s/, '');
+  const decodedToken = validateJwt(accessToken);
 
-    if (decodedToken.valid && decodedToken.decoded) {
-      res.locals.user = decodedToken.decoded;
-    } else if (decodedToken.expired && refreshToken) {
-      const newAccessToken: string | boolean = await reIssueAccessToken(
-        refreshToken
-      );
-
-      if (newAccessToken) {
-        res.setHeader('x-access-token', newAccessToken);
-        res.cookie('accessToken', accessToken, {
-          maxAge: 1000 * 60 * 15, // 15 mins
-          httpOnly: true,
-          domain: 'localhost',
-          path: '/',
-          sameSite: 'strict',
-          secure: false,
-        });
-        const result = validateJwt(newAccessToken);
-        res.locals.user = result.decoded;
-      }
+  if (decodedToken.valid && decodedToken.decoded) {
+    res.locals.user = decodedToken.decoded;
+  } else if (decodedToken.expired && refreshToken) {
+    const newAccessToken: string | boolean = await reIssueAccessToken(
+      refreshToken
+    );
+    if (newAccessToken) {
+      res.setHeader('x-access-token', newAccessToken);
+      res.cookie('accessToken', newAccessToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+        httpOnly: true,
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'strict',
+        secure: false,
+      });
+      const result = validateJwt(newAccessToken);
+      res.locals.user = result.decoded;
     }
   }
 
