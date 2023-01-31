@@ -18,5 +18,5 @@ export async function createUserHandler(
 }
 
 export async function getCurrentUser(req: Request, res: Response) {
-  return res.send(res.locals.user)
+  return res.send(res.locals.user);
 }
