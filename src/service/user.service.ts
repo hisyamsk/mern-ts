@@ -106,9 +106,9 @@ export async function findAndUpdateUser(
   update: UpdateQuery<IUserDocument>,
   options: QueryOptions = {}
 ) {
-  return (await UserModel.findOneAndUpdate(
-    filter,
-    update,
-    options
-  ).select('-password')) as IUserDocumentResult;
+  const user = await UserModel.findOneAndUpdate(filter, update, options)
+    .select('-password')
+    .lean<IUserDocumentResult>();
+
+  return user;
 }

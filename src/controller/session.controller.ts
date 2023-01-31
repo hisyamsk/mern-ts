@@ -13,10 +13,7 @@ import {
   getGoogleUser,
   validatePassword,
 } from '../service/user.service';
-import {
-  IGoogleUserResult,
-  IUserDocumentResult,
-} from '../interface/model';
+import { IGoogleUserResult, IUserDocumentResult } from '../interface/model';
 import { signJwt } from '../utils/jwt.utils';
 
 export async function createUserSessionHandler(req: Request, res: Response) {
@@ -85,11 +82,7 @@ export async function googleOAuthHandler(req: Request, res: Response) {
   );
 
   // create session and set cookie
-  const { accessToken, refreshToken } = await setUserTokensCookie(
-    req,
-    res,
-    user
-  );
+  await setUserTokensCookie(req, res, user);
 
   // redirect back to client
   return res.redirect(config.get('origin'));
